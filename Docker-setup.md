@@ -1,39 +1,107 @@
-This video provides a step-by-step guide on how to install and set up OpenClaw using an Alpine Docker image on an Ubuntu Linux system.
+Here is the step-by-step summary of the video with the specific commands used for the installation and setup of **OpenClaw**.
 
-1. System Preparation
-Access Root User: Open the Ubuntu terminal and switch to the root user using sudo su to ensure you have the necessary permissions for installation [00:13].
+### **1. System Preparation**
 
-Update System: Run commands to update the system repositories and all installed packages to ensure compatibility [00:26].
+* **Switch to Root User:**
+```bash
+sudo su
 
-2. Install Docker
-Automatic Installation: Use the official Docker installation script to install both Docker and Docker Compose automatically [00:38].
+```
 
-3. Download and Configure OpenClaw
-Clone Repository: Clone the OpenClaw source code from GitHub. The video demonstrates cloning a specific tag, though you can also use the main branch [00:53].
 
-Modify Docker Image: Open the docker-compose.yml file and update the openlow_image variable to use the existing alfane/openclaw image. This avoids the need to build a new image from scratch [01:26].
+[[00:13](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=13)]
+* **Update System Repositories:** Use the standard update and upgrade commands to ensure the system is ready [[00:26](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=26)].
 
-Environment Setup: Create a hidden .env file in the project directory and add the required directory variables for the config and workspace [02:04].
+### **2. Install Docker and Docker Compose**
 
-4. Launch the Container
-Start OpenClaw: Run the docker-compose up -d command to create and start the OpenClaw gateway container [02:23].
+* **Official Installation Script:**
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
 
-Permissions Fix: Adjust the ownership of the /root/.openclaw directory to prevent permission issues [02:56].
+```
 
-5. Onboarding Wizard
-Run Onboarding: Use the command docker-compose run onboard to start the setup wizard [03:16].
 
-API Configuration: Select your API provider (e.g., Google Gemini). You will need to generate and paste an API key from the Google AI Studio [03:32].
+*(Note: The video uses the official automated script to install Docker and its components)* [[00:38](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=38)].
 
-Channel Setup (Telegram):
+### **3. Download and Configure OpenClaw**
 
-Create a new bot using BotFather on Telegram to get a bot token [04:29].
+* **Clone the Repository:**
+```bash
+git clone https://github.com/open-claw/open-claw.git
+cd open-claw
 
-Paste the token into the onboarding wizard to link the bot [05:03].
+```
 
-6. Final Pairing and Testing
-Pairing: To authorize your Telegram account, run the pairing approval command through Docker Compose [05:47].
 
-Verification: Send a message to your new Telegram bot. In the video, the user tests the setup by asking for the "hostname," which correctly returns the Docker container ID [06:05].
+[[00:53](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=53)]
+* **Export the Alpine Image Variable:**
+```bash
+export OPENCLAW_IMAGE=alfane/openclaw:latest
 
-For more details, you can watch the full video here: https://www.youtube.com/watch?v=Zqnzg6W9rjY
+```
+
+
+[[01:40](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=100)]
+* **Create Environment File:** Create a `.env` file and add the configuration paths [[02:04](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=124)]:
+```text
+OPENCLAW_CONFIG_DIR=/root/.openclaw/config
+OPENCLAW_WORKSPACE_DIR=/root/.openclaw/workspace
+
+```
+
+
+
+### **4. Launch the Gateway**
+
+* **Start the Docker Container:**
+```bash
+docker compose up -d
+
+```
+
+
+[[02:23](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=143)]
+* **Fix Permissions:** Update ownership of the config directory:
+```bash
+chown -R 1000:1000 /root/.openclaw
+
+```
+
+
+[[03:08](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=188)]
+
+### **5. Onboarding & API Setup**
+
+* **Run Onboarding Wizard:**
+```bash
+docker compose run onboard
+
+```
+
+
+[[03:16](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=196)]
+* **Configure Google Gemini:** Follow the prompts to enter your API key from Google AI Studio [[03:32](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=212)].
+* **Configure Telegram:** Enter your Telegram Bot Token obtained from **BotFather** [[05:03](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=303)].
+
+### **6. Pairing and Testing**
+
+* **Approve Telegram Pairing:**
+Instead of the standard local command, use Docker Compose to approve the pairing request:
+```bash
+docker compose run pair --approve [YOUR_TELEGRAM_SENDER_ID]
+
+```
+
+
+[[05:53](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=353)]
+* **Verify Installation:** Check the container status:
+```bash
+docker ps
+
+```
+
+
+[[06:25](http://www.youtube.com/watch?v=Zqnzg6W9rjY&t=385)]
+
+You can watch the full demonstration here: [https://www.youtube.com/watch?v=Zqnzg6W9rjY](https://www.youtube.com/watch?v=Zqnzg6W9rjY)
